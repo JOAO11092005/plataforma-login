@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-do-site);
+}
+:root{
+    ---cor-principal: rgb(13,106,134);
+    --cor-caixa: white;
+    --botao: rgb(180, 8, 8);
+    --font-do-site: "Open Sans", sans-serif;
+}
+body{
+    background-color: var(---cor-principal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.container{
+    width: 600px;
+    
+    background-color: var(--cor-caixa);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.container h1{
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+.container p{
+    margin-bottom: 20px;
+}
+.container input{
+    margin-bottom: 20px;
+    height: 40px;
+    padding-left: 20px;
+    padding: 10px;
+}
+.container button{
+  padding: 10px;
+  background-color: var(---cor-principal);
+  border: none;
+  color: var(--cor-caixa);
+}
+.container button:hover{
+    background-color: var(--botao);
+    cursor: pointer;
+}

@@ -9,28 +9,24 @@ const firebaseConfig = {
     measurementId: "G-MCCQYJLDT0"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-
 
 const planos = {
     "Crunchyroll": "1zq8gDxittdoA6UtLU32",
     "PrimeVideo": "URykK28HwfIBG8RXFauw",
-    "Star e Disney": "nN1x2ZSNmQ61PUc6iem4",
+    "Disney+": "IYPEtpVFXFJN8boLvO3T",
     "Max": "yMgAnPg9heXwtM2QrR3a"
 };
 
 async function buscarDadosFirebase(username) {
     const querySnapshot = await db.collection('users').where('username', '==', username).get();
-
     if (!querySnapshot.empty) {
         return querySnapshot.docs[0].data();
     } else {
         throw new Error('Usuário não encontrado no Firebase');
     }
 }
-
 
 async function buscarCredenciais(id) {
     try {
@@ -57,7 +53,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const dadosUsuario = await buscarDadosFirebase(username);
 
         if (username === dadosUsuario.username && password === dadosUsuario.username) { 
-
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('user-info').style.display = 'block';
 
@@ -87,11 +82,31 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                         </div>
                     `;
                 } else {
-                    li.textContent = `Plataforma: ${platform} - Usuario e senha são pessoal.`;
+                    const credenciais = await buscarCredenciais('IYPEtpVFXFJN8boLvO3T');
+                    li.innerHTML = `
+                        <div class="platform-name">${platform}</div>
+                        <div class="credentials">
+                            <div>
+                                <span class="label">Email:</span>
+                                <span>${credenciais.email}</span>
+                            </div>
+                            <div>
+                                <span class="label">Senha:</span>
+                                <span>${credenciais.senha}</span>
+                            </div>
+                        </div>
+                    `;
                 }
                 
                 platformList.appendChild(li);
             }
+
+            // Adiciona a lógica para esconder "Youtube Premium" após adicionar a lista
+            document.querySelectorAll('.platform-name').forEach(function(element) {
+                if (element.textContent.trim() === 'Youtube Premium') {
+                    element.closest('li').style.display = 'none';
+                }
+            });
 
         } else {
             alert('Nome de usuário ou senha incorretos!');
